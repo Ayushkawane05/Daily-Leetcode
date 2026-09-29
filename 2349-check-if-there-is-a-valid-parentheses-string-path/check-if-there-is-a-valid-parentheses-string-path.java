@@ -2,6 +2,8 @@ class Solution {
     public boolean hasValidPath(char[][] grid) {
         int n = grid.length;
         int m = grid[0].length;
+        if ((m + n - 1) % 2 != 0) return false;
+        if (grid[0][0] == ')' || grid[n-1][m-1] == '(') return false;
         Boolean dp[][][] = new Boolean[grid.length][grid[0].length][m + n + 1];
         return check(grid, 0, 0, 0, dp);
 
