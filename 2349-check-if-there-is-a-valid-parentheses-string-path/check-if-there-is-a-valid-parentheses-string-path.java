@@ -9,34 +9,16 @@ class Solution {
 
     }
 
-    public boolean check(char[][] grid, int i, int j, int open, Boolean[][][] dp) {
-
-        if (i == grid.length || j == grid[0].length) {
-            return false;
-        }
-
-        if (grid[i][j] == '(')
-            open++;
-        else if (grid[i][j] == ')')
-            open--;
-
-        if (open < 0)
-            return false;
-
-        if (i == grid.length - 1 && j == grid[0].length - 1) {
-            if (open == 0)
-                return true;
-            else
-                return false;
-        }
-
-        if (dp[i][j][open] != null) {
-            return dp[i][j][open];
-        }
-
-        boolean down = check(grid, i + 1, j, open, dp);
-        boolean up = check(grid, i, j + 1, open, dp);
-
-        return dp[i][j][open] = down || up;
+   private boolean check(char[][] grid, int i, int j, int balance, Boolean[][][] memo) {
+        int m = grid.length, n = grid[0].length;
+        balance += grid[i][j] == '(' ? 1 : -1;
+        if (balance < 0) return false;
+        if (i == m - 1 && j == n - 1) return balance == 0;
+        if (memo[i][j][balance] != null) return memo[i][j][balance];
+        boolean res = false;
+        if (i + 1 < m) res |= check(grid, i + 1, j, balance, memo);
+        if (!res && j + 1 < n) res |= check(grid, i, j + 1, balance, memo);
+        memo[i][j][balance] = res;
+        return res;
     }
 }
