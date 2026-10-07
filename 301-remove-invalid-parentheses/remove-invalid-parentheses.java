@@ -20,45 +20,45 @@ class Solution {
 
     public int check(StringBuilder str, String s, int i, Set<String> set) {
 
-          if (i >= s.length()) {
+        if (i >= s.length()) {
 
-        if (valid(str.toString())) {
-            set.add(str.toString());
-            return str.length();
+            if (valid(str.toString())) {
+                set.add(str.toString());
+                return str.length();
+            }
+
+            return 0;
         }
 
-        return 0;
-    }
+        char ch = s.charAt(i);
 
-    char ch = s.charAt(i);
+        if (ch != '(' && ch != ')') {
 
-    if (ch != '(' && ch != ')') {
+            str.append(ch);
+
+            int ans = check(str, s, i + 1, set);
+
+            str.deleteCharAt(str.length() - 1);
+
+            return ans;
+        }
 
         str.append(ch);
 
-        int ans = check(str, s, i + 1, set);
+        int take = check(str, s, i + 1, set);
 
         str.deleteCharAt(str.length() - 1);
 
-        return ans;
-    }
+        int not = check(str, s, i + 1, set);
 
-    str.append(ch);
-
-    int take = check(str, s, i + 1, set);
-
-    str.deleteCharAt(str.length() - 1);
-
-    int not = check(str, s, i + 1, set);
-
-    return Math.max(take, not);
+        return Math.max(take, not);
     }
 
     public boolean valid(String s) {
 
         int balance = 0;
-
-        for (char ch : s.toCharArray()) {
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
 
             if (ch == '(') {
                 balance++;
