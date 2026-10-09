@@ -8,13 +8,12 @@ class Solution {
                 open++;
             else {
                 if (open == 0) {
-                    if (i < s.length() - 1 && s.charAt(i + 1) == ')') {
+                    if (i+1 < s.length() && s.charAt(i + 1) == ')') {
                         i++;
                     } else {
                         ans++;
                     }
                     ans++;
-
                 }
 
                 else {
