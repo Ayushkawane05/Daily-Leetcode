@@ -8,13 +8,10 @@ class Solution {
             while (!st.isEmpty() && nums[st.peek()] <= nums[i]) {
                 st.pop();
             }
-            if (st.isEmpty()) {
-                ans[i] = 0;
-                st.push(i);
-            } else {
+            if (!st.isEmpty())
                 ans[i] = st.peek() - i;
-                st.push(i);
-            }
+            st.push(i);
+
         }
         return ans;
     }
