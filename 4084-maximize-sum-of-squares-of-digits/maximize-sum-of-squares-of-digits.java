@@ -8,10 +8,8 @@ class Solution {
         sum = sum % 9;
         num = num - d;
         while (num > 0) {
-            if (sum < 10) {
-                ans.append(sum);
-                sum = 0;
-            }
+            ans.append(sum);
+            sum = 0;
             num--;
         }
         if (sum == 0)
