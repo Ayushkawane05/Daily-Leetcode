@@ -1,32 +1,35 @@
 class Solution {
     public int coinChange(int[] coins, int amount) {
-        int[][] dp = new int[coins.length][amount + 1];
-        for (int[] num : dp) {
-            Arrays.fill(num, -1);
-        }
-        int ans = check(coins, amount, coins.length - 1, dp);
-        if (ans >= 1e9)
-            return -1;
-        return ans;
-    }
+        int n = coins.length;
+        int INF = (int) 1e9;
 
-    public int check(int[] nums, int t, int i, int[][] dp) {
-        if (t < 0)
-            return (int) 1e9;
-        if (i == 0) {
-            if (t % nums[i] == 0)
-                return t / nums[i];
-            else
-                return (int) 1e9;
-        }
-        if (dp[i][t] != -1)
-            return dp[i][t];
+        int[][] dp = new int[n][amount + 1];
 
-        int not = check(nums, t, i - 1, dp);
-        int take = (int) 1e9;
-        if (t >= nums[i]) {
-            take = 1 + check(nums, t - nums[i], i, dp);
+        for (int t = 0; t <= amount; t++) {
+            if (t % coins[0] == 0) {
+                dp[0][t] = t / coins[0];
+            } else {
+                dp[0][t] = INF;
+            }
         }
-        return dp[i][t] = Math.min(not, take);
+
+        for (int i = 1; i < n; i++) {
+            for (int t = 0; t <= amount; t++) {
+
+                int not = dp[i - 1][t];
+
+                int take = INF;
+
+                if (coins[i] <= t) {
+                    take = 1 + dp[i][t - coins[i]];
+                }
+
+                dp[i][t] = Math.min(not, take);
+            }
+        }
+
+        int ans = dp[n - 1][amount];
+
+        return ans >= INF ? -1 : ans;
     }
 }
