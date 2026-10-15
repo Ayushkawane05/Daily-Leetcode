@@ -9,10 +9,10 @@ class Solution {
         int ans = 0;
 
         int[][] directions = {
-            {1, 0},
-            {-1, 0},
-            {0, 1},
-            {0, -1}
+                { 1, 0 },
+                { -1, 0 },
+                { 0, 1 },
+                { 0, -1 }
         };
 
         for (int i = 0; i < n; i++) {
@@ -20,39 +20,31 @@ class Solution {
 
                 if (nums[i][j] == '1') {
                     ans++;
+                    check(nums, i, j);
 
-                    Queue<int[]> q = new LinkedList<>();
-                    q.offer(new int[]{i, j});
-
-                    nums[i][j] = '0';
-
-                    while (!q.isEmpty()) {
-                        int[] cell = q.poll();
-
-                        int a = cell[0];
-                        int b = cell[1];
-
-                        for (int[] dir : directions) {
-                            int c = a + dir[0];
-                            int d = b + dir[1];
-
-                            if (c < 0 || c >= n ||
-                                d < 0 || d >= m) {
-                                continue;
-                            }
-
-                            if (nums[c][d] == '0') {
-                                continue;
-                            }
-
-                            nums[c][d] = '0';
-                            q.offer(new int[]{c, d});
-                        }
-                    }
                 }
             }
         }
 
         return ans;
     }
+
+    public void check(char[][] nums, int i, int j) {
+        int n = nums.length;
+        int m = nums[0].length;
+        if (i >= n || i < 0 || j >= m || j < 0 || nums[i][j] != '1')
+            return;
+        nums[i][j] = '2';
+        int[][] arr = {
+                { 1, 0 },
+                { -1, 0 },
+                { 0, 1 },
+                { 0, -1 }
+        };
+        for (int x = 0; x < 4; x++) {
+            check(nums, i + arr[x][0], j + arr[x][1]);
+        }
+        return;
+    }
+
 }
