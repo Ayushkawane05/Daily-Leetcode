@@ -1,31 +1,24 @@
 class Solution {
     public int change(int amount, int[] coins) {
         int dp[][] = new int[coins.length][amount + 1];
-        for(int[] num: dp){
-            Arrays.fill(num,-1);
-        }
-        return check(coins.length - 1, amount, coins, dp);
-    }
-
-    public int check(int i, int amount, int[] coins, int[][] dp) {
-        if (amount == 0)
-            return 1;
-        if (amount < 0)
-            return 0;
-        if (i == 0) {
-            if (amount % coins[i] == 0)
-                return 1;
+        for (int i = 0; i <= amount; i++) {
+            if (i % coins[0] == 0)
+                dp[0][i] = 1;
             else
-                return 0;
+                dp[0][i] = 0;
         }
-        if (dp[i][amount] != -1)
-            return dp[i][amount];
+        for (int i = 1; i < dp.length; i++) {
+            for (int j = 0; j < dp[0].length; j++) {
+                int not = dp[i - 1][j];
+                int take = 0;
+                if (j >= coins[i]) {
+                    take = dp[i][j - coins[i]];
+                }
+                dp[i][j] = not + take;
+            }
+        }
+        return dp[dp.length - 1][amount];
 
-        int not = check(i - 1, amount, coins, dp);
-        int take = 0;
-        if (amount >= coins[i]) {
-            take = check(i, amount - coins[i], coins, dp);
-        }
-        return dp[i][amount] = not + take;
     }
+
 }
