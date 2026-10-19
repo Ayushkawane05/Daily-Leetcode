@@ -2,29 +2,25 @@ class Solution {
     int mod = 1_000_000_007;
 
     public int countTexts(String s) {
-        int[] dp = new int[s.length()];
-        Arrays.fill(dp, -1);
-        return check(s, s.length() - 1, dp);
-    }
+        int[] dp = new int[s.length() + 1];
+        dp[0] = 1;
+        for (int i = 1; i <= s.length(); i++) {
 
-    public int check(String s, int i, int[] dp) {
-        if (i < 0)
-            return 1;
+            int mov = 0;
+            int len = (s.charAt(i - 1) == '7' || s.charAt(i - 1) == '9') ? 4 : 3;
 
-        if (dp[i] != -1)
-            return dp[i];
+            for (int x = 1; x <= len; x++) {
+                if (i - x < 0 || s.charAt(i - 1) != s.charAt(i - x))
+                    break;
 
-        int mov = 0;
-        int len = (s.charAt(i) == '7' || s.charAt(i) == '9') ? 4 : 3;
+                mov = (int) ((mov + (long) dp[i - x])) % mod;
+            }
 
-        for (int x = 1; x <= len; x++) {
-            if (i - x + 1 < 0 ||
-                s.charAt(i) != s.charAt(i - x + 1))
-                break;
+            dp[i] = mov;
 
-            mov = (int) ((mov + (long) check(s, i - x, dp)) % mod);
         }
 
-        return dp[i] = mov;
+        return dp[s.length()];
     }
+
 }
