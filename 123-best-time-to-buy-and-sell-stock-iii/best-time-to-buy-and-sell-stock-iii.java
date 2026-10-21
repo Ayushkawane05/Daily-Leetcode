@@ -1,22 +1,16 @@
 class Solution {
-    public int maxProfit(int[] nums) {
-        Integer[][][] dp = new Integer[nums.length][2][2];
-        return check(nums, 0, 0, 1, dp);
-    }
+    public int maxProfit(int[] prices) {
+        int max1 = Integer.MIN_VALUE;
+        int p1 = 0;
+        int max2 = Integer.MIN_VALUE;
+        int p2 = 0;
 
-    public static int check(int[] nums, int i, int b, int k, Integer[][][] dp) {
-        if (i == nums.length || k < 0)
-            return 0;
-        if (dp[i][b][k] != null)
-            return dp[i][b][k];
-
-        if (b == 0) {
-
-            return dp[i][b][k] = Math.max(-nums[i] + check(nums, i + 1, 1, k, dp), check(nums, i + 1, 0, k, dp));
-
-        } else {
-            return dp[i][b][k] = Math.max(nums[i] + check(nums, i + 1, 0, k - 1, dp), check(nums, i + 1, 1, k, dp));
+        for (int num : prices) {
+            max1 = Math.max(max1, -num);
+            p1 = Math.max(max1 + num, p1);
+            max2 = Math.max(max2, p1 - num);
+            p2 = Math.max(p2, max2 + num);
         }
+        return p2;
     }
-
 }
